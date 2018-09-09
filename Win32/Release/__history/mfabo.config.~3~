@@ -1,0 +1,10 @@
+[CRUNCH]
+host=localhost
+port=5495
+database=mfa_crunch
+password=masterkey
+username=postgres
+
+[CONF]
+sqldir=D:\code\mfa_git\MFADB\
+

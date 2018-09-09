@@ -1,0 +1,14 @@
+program MFABackOffice;
+
+uses
+  Vcl.Forms,
+  mfa_backoffice in 'mfa_backoffice.pas' {MFABO};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TMFABO, MFABO);
+  Application.Run;
+end.

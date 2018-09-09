@@ -1,0 +1,1305 @@
+
+
+unit mfa_backoffice;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ZAbstractConnection, ZConnection, Inifiles,
+  cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters, cxStyles,
+  cxCustomData, cxFilter, cxData, cxDataStorage, cxEdit, cxNavigator, Data.DB,
+  cxDBData, dxBarBuiltInMenu, cxPC, cxGridCustomTableView, cxGridTableView,
+  cxGridDBTableView, cxGridLevel, cxClasses, cxGridCustomView, cxGrid,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, dxSkinsCore,
+  dxSkinOffice2016Dark, dxSkinscxPCPainter, dxSkinsForm, dxSkinOffice2013White,
+  Vcl.Menus, Vcl.ExtCtrls, Vcl.StdCtrls, cxButtons, u_ShowProgress, u_wm_struc ,
+  ZDbcPostgreSql, IdComponent, IdTCPConnection, IdTCPClient,
+  IdExplicitTLSClientServerBase, IdMessageClient, IdIMAP4, IdBaseComponent,
+  IdMailBox, cxContainer, dxLayoutcxEditAdapters, cxDropDownEdit, cxCalendar,
+  cxDBEdit, cxMemo, dxLayoutContainer, cxTextEdit, cxMaskEdit, cxSpinEdit,
+  dxLayoutControl, dxLayoutLookAndFeels, cxCheckBox, cxGroupBox, IdHashMessageDigest, ShellApi,
+  cxProgressBar, Vcl.ComCtrls,
+  cxDataControllerConditionalFormattingRulesManagerDialog;
+
+type
+  tConnectionSettings  = record
+    _hostname : STring;
+    _port : integer;
+    _database : string;
+    _password : String;
+    _pguser : string;
+  end;
+
+
+
+  TMFABO = class(TForm)
+    ZConnMFA: TZConnection;
+    ZConnFleet: TZConnection;
+    ClientDS: TDataSource;
+    cxGrid1DBTableView1: TcxGridDBTableView;
+    cxGrid1Level1: TcxGridLevel;
+    cxGrid1: TcxGrid;
+    cxGrid1DBTableView1client_id: TcxGridDBColumn;
+    cxGrid1DBTableView1client_name: TcxGridDBColumn;
+    cxGrid1DBTableView1client_last_import: TcxGridDBColumn;
+    cxGrid1DBTableView1client_last_push: TcxGridDBColumn;
+    cxPageControl1: TcxPageControl;
+    cxTabSheet1: TcxTabSheet;
+    cxTabSheet2: TcxTabSheet;
+    dxSkinController1: TdxSkinController;
+    Panel1: TPanel;
+    cxGrid1DBTableView1client_providers: TcxGridDBColumn;
+    cxGrid1DBTableView1companytel: TcxGridDBColumn;
+    cxGrid1DBTableView1contactname: TcxGridDBColumn;
+    cxGrid1DBTableView1contactemail: TcxGridDBColumn;
+    cxGrid1DBTableView1contactcellno: TcxGridDBColumn;
+    cxStyleRepository1: TcxStyleRepository;
+    cxStyle1: TcxStyle;
+    cxStyle2: TcxStyle;
+    MFAInternalQ: TZQuery;
+    dxLayoutLookAndFeelList1: TdxLayoutLookAndFeelList;
+    dxLayoutControl1: TdxLayoutControl;
+    cxDBSpinEdit2: TcxDBSpinEdit;
+    cxDBMemo18: TcxDBMemo;
+    cxDBMemo19: TcxDBMemo;
+    cxDBMemo20: TcxDBMemo;
+    cxDBMemo21: TcxDBMemo;
+    cxDBDateEdit3: TcxDBDateEdit;
+    cxDBDateEdit4: TcxDBDateEdit;
+    cxDBMemo22: TcxDBMemo;
+    cxDBMemo23: TcxDBMemo;
+    cxDBMemo24: TcxDBMemo;
+    cxDBMemo25: TcxDBMemo;
+    cxDBMemo26: TcxDBMemo;
+    cxDBMemo27: TcxDBMemo;
+    cxDBMemo28: TcxDBMemo;
+    cxDBMemo29: TcxDBMemo;
+    cxDBMemo30: TcxDBMemo;
+    cxDBMemo31: TcxDBMemo;
+    cxDBMemo32: TcxDBMemo;
+    cxDBMemo33: TcxDBMemo;
+    cxDBMemo34: TcxDBMemo;
+    dxLayoutControl1Group_Root: TdxLayoutGroup;
+    dxLayoutItem1: TdxLayoutItem;
+    dxLayoutItem2: TdxLayoutItem;
+    dxLayoutItem3: TdxLayoutItem;
+    dxLayoutItem4: TdxLayoutItem;
+    dxLayoutItem5: TdxLayoutItem;
+    dxLayoutItem6: TdxLayoutItem;
+    dxLayoutItem7: TdxLayoutItem;
+    dxLayoutItem8: TdxLayoutItem;
+    dxLayoutItem9: TdxLayoutItem;
+    dxLayoutItem10: TdxLayoutItem;
+    dxLayoutItem11: TdxLayoutItem;
+    dxLayoutItem12: TdxLayoutItem;
+    dxLayoutItem13: TdxLayoutItem;
+    dxLayoutItem14: TdxLayoutItem;
+    dxLayoutItem15: TdxLayoutItem;
+    dxLayoutItem16: TdxLayoutItem;
+    dxLayoutItem17: TdxLayoutItem;
+    dxLayoutItem18: TdxLayoutItem;
+    dxLayoutItem19: TdxLayoutItem;
+    dxLayoutItem20: TdxLayoutItem;
+    dxLayoutGroup1: TdxLayoutGroup;
+    dxLayoutGroup2: TdxLayoutGroup;
+    dxLayoutAutoCreatedGroup1: TdxLayoutAutoCreatedGroup;
+    dxLayoutAutoCreatedGroup2: TdxLayoutAutoCreatedGroup;
+    dxLayoutAutoCreatedGroup3: TdxLayoutAutoCreatedGroup;
+    ClientQ: TZQuery;
+    ConnectQ: TZQuery;
+    ConnectDS: TDataSource;
+    FleetInternalQ: TZQuery;
+    cxStyle3: TcxStyle;
+    ImportConnQ: TZQuery;
+    ImportDS: TDataSource;
+    DashConnQ: TZQuery;
+    DashDS: TDataSource;
+    cxTabSheet3: TcxTabSheet;
+    cxGroupBox4: TcxGroupBox;
+    cxGroupBox1: TcxGroupBox;
+    cxGrid2: TcxGrid;
+    cxGrid2DBTableView1: TcxGridDBTableView;
+    cxGrid2DBTableView1key1: TcxGridDBColumn;
+    cxGrid2DBTableView1value1: TcxGridDBColumn;
+    cxGrid2Level1: TcxGridLevel;
+    cxGroupBox2: TcxGroupBox;
+    cxGrid3: TcxGrid;
+    cxGridDBTableView1: TcxGridDBTableView;
+    cxGridDBColumn1: TcxGridDBColumn;
+    cxGridDBColumn2: TcxGridDBColumn;
+    cxGridLevel1: TcxGridLevel;
+    cxGroupBox3: TcxGroupBox;
+    cxGrid4: TcxGrid;
+    cxGridDBTableView2: TcxGridDBTableView;
+    cxGridDBColumn3: TcxGridDBColumn;
+    cxGridDBColumn4: TcxGridDBColumn;
+    cxGridLevel2: TcxGridLevel;
+    btnSaveConfig: TcxButton;
+    btnImportRawData: TcxButton;
+    btnPushAgg: TcxButton;
+    cxButton2: TcxButton;
+    cxGroupBox5: TcxGroupBox;
+    cxGrid5: TcxGrid;
+    cxGridDBTableView3: TcxGridDBTableView;
+    cxGridDBColumn5: TcxGridDBColumn;
+    cxGridDBColumn6: TcxGridDBColumn;
+    cxGridLevel3: TcxGridLevel;
+    EmailDS: TDataSource;
+    EmailConnQ: TZQuery;
+    cxGroupBox6: TcxGroupBox;
+    cxGrid6: TcxGrid;
+    cxGridDBTableView4: TcxGridDBTableView;
+    cxGridDBColumn7: TcxGridDBColumn;
+    cxGridDBColumn8: TcxGridDBColumn;
+    cxGridLevel4: TcxGridLevel;
+    ProviderDS: TDataSource;
+    ProviderQ: TZQuery;
+    cxButton1: TcxButton;
+    Panel2: TPanel;
+    btninitFleetDB: TcxButton;
+    cxTabSheet4: TcxTabSheet;
+    btnAllInOne: TcxButton;
+    dxLayoutItem22: TdxLayoutItem;
+    cxButton3: TcxButton;
+    cxPageControl2: TcxPageControl;
+    cxTabSheet5: TcxTabSheet;
+    cxTabSheet6: TcxTabSheet;
+    UsersDS: TDataSource;
+    UsersQ: TZQuery;
+    cxGrid7DBTableView1: TcxGridDBTableView;
+    cxGrid7Level1: TcxGridLevel;
+    cxGrid7: TcxGrid;
+    cxGrid7DBTableView1login_email1: TcxGridDBColumn;
+    cxGrid7DBTableView1login_password1: TcxGridDBColumn;
+    cxGrid7DBTableView1firstname1: TcxGridDBColumn;
+    cxGrid7DBTableView1surname1: TcxGridDBColumn;
+    cxGrid7DBTableView1alternate_mail1: TcxGridDBColumn;
+    cxGrid7DBTableView1client_code1: TcxGridDBColumn;
+    cxButton4: TcxButton;
+    cxButton5: TcxButton;
+    cxButton6: TcxButton;
+    btnRecreateEnv: TcxButton;
+    edUsername: TLabeledEdit;
+    edFirstname: TLabeledEdit;
+    edSurname: TLabeledEdit;
+    edPassword: TLabeledEdit;
+    edRePassword: TLabeledEdit;
+    btnSaveUser: TcxButton;
+    btnCancelUser: TcxButton;
+    EditUserQ: TZQuery;
+    edAlterMail: TLabeledEdit;
+    cxTabSheet7: TcxTabSheet;
+    cxGrid8DBTableView1: TcxGridDBTableView;
+    cxGrid8Level1: TcxGridLevel;
+    cxGrid8: TcxGrid;
+    LogDS: TDataSource;
+    LogQ: TZQuery;
+    cxGrid8DBTableView1_log_type: TcxGridDBColumn;
+    cxGrid8DBTableView1_result: TcxGridDBColumn;
+    cxGrid8DBTableView1_message: TcxGridDBColumn;
+    cxGrid8DBTableView1_details: TcxGridDBColumn;
+    cxGrid8DBTableView1_log_time: TcxGridDBColumn;
+    cxButton7: TcxButton;
+    cxTabSheet8: TcxTabSheet;
+    GloClientDS: TDataSource;
+    GloClientQ: TZQuery;
+    cxGrid9DBTableView1: TcxGridDBTableView;
+    cxGrid9Level1: TcxGridLevel;
+    cxGrid9: TcxGrid;
+    cxGrid9DBTableView1Column1: TcxGridDBColumn;
+    cxGrid9DBTableView1Column2: TcxGridDBColumn;
+    cxGrid9DBTableView1Column3: TcxGridDBColumn;
+    cxProgressBar1: TcxProgressBar;
+    cxGrid8DBTableView1Column1: TcxGridDBColumn;
+    Panel3: TPanel;
+    cxButton9: TcxButton;
+    cxButton10: TcxButton;
+    cxButton8: TcxButton;
+    StatusBar1: TStatusBar;
+    procedure FormCreate(Sender: TObject);
+    procedure cxGrid1DBTableView1FocusedRecordChanged(
+      Sender: TcxCustomGridTableView; APrevFocusedRecord,
+      AFocusedRecord: TcxCustomGridRecord;
+      ANewItemRecordFocusingChanged: Boolean);
+    procedure btnImportRawDataClick(Sender: TObject);
+    procedure btnPushAggClick(Sender: TObject);
+    procedure ClientQAfterScroll(DataSet: TDataSet);
+    procedure btnSaveConfigClick(Sender: TObject);
+    procedure cxButton1Click(Sender: TObject);
+    procedure btninitFleetDBClick(Sender: TObject);
+    procedure cxDBMemo21Exit(Sender: TObject);
+    procedure btnAllInOneClick(Sender: TObject);
+    procedure cxButton3Click(Sender: TObject);
+    procedure cxButton5Click(Sender: TObject);
+    procedure cxButton6Click(Sender: TObject);
+    procedure btnRecreateEnvClick(Sender: TObject);
+    procedure cxButton4Click(Sender: TObject);
+    procedure btnSaveUserClick(Sender: TObject);
+    procedure cxTabSheet6Show(Sender: TObject);
+    procedure cxTabSheet4Show(Sender: TObject);
+    procedure btnCancelUserClick(Sender: TObject);
+    procedure cxButton7Click(Sender: TObject);
+    procedure cxTabSheet7Show(Sender: TObject);
+    procedure cxButton8Click(Sender: TObject);
+    procedure cxButton9Click(Sender: TObject);
+    procedure cxButton10Click(Sender: TObject);
+  private
+    AddUser : Boolean;
+    procedure ParseINIFile(MySection: AnsiString);
+    procedure ConnectMFA;
+    procedure DisconnectMFA;
+    procedure DoSQLQuery(MyQ: TZQuery; mysql: AnsiString);
+    procedure GetClients;
+    procedure LinkMFAQueries;
+    procedure DoSQLExecFile(MyScript: AnsiString);
+    procedure SetNotificationProcedure(pMyProcedure: Pointer);
+    procedure DoSQLExec(MySql: AnsiString);
+    function Return: AnsiString;
+    procedure DoSQLExecFileFleet(MyScript: AnsiString);
+    procedure DoSQLExecFleet(MySql: AnsiString);
+    procedure DoSQLQueryFleet(MyQ: TZQuery; mysql: AnsiString);
+    procedure LinkFleetQueries;
+    procedure ConnectToFleetDB;
+    procedure SetNotificationProcedureFleet(pMyProcedure: Pointer);
+    procedure DecompileMacros(var MyString: AnsiString);
+    function MD5File( FileName: string): string;
+    procedure GetUsers;
+    procedure DoStuffWithFiles;
+    procedure LoadUser;
+    procedure GetGlobalClients;
+    { Private declarations }
+  public
+    { Public declarations }
+    MFASettings : tConnectionSettings;
+    FleetSettings : tConnectionSettings;
+    SQLDir : AnsiString;
+
+    ImportDir : AnsiString;
+    Archivedir : AnsiString;
+
+  end;
+
+var
+  MFABO: TMFABO;
+
+  procedure ShowHideWait( ShowIt:Boolean=True;
+    eMess:AnsiString='Please be patient...';myprogress : integer = 0; maxprogress : integer = 0 );
+
+
+implementation
+
+{$R *.dfm}
+
+var MDRec : TMDRec;
+
+
+
+function GetAppVersionStr: string;
+var
+  Exe: string;
+  Size, Handle: DWORD;
+  Buffer: TBytes;
+  FixedPtr: PVSFixedFileInfo;
+begin
+  Exe := ParamStr(0);
+  Size := GetFileVersionInfoSize(PChar(Exe), Handle);
+  if Size = 0 then
+    RaiseLastOSError;
+  SetLength(Buffer, Size);
+  if not GetFileVersionInfo(PChar(Exe), Handle, Size, Buffer) then
+    RaiseLastOSError;
+  if not VerQueryValue(Buffer, '\', Pointer(FixedPtr), Size) then
+    RaiseLastOSError;
+  Result := Format('%d.%d.%d.%d',
+    [LongRec(FixedPtr.dwFileVersionMS).Hi,  //major
+     LongRec(FixedPtr.dwFileVersionMS).Lo,  //minor
+     LongRec(FixedPtr.dwFileVersionLS).Hi,  //release
+     LongRec(FixedPtr.dwFileVersionLS).Lo]) //build
+end;
+
+
+FUNCTION FileMove(FromName,ToName : string ) : Boolean;
+var p1,p2 : pchar;
+   myflags : Cardinal;
+begin
+  p1 := allocmem(255);
+  p2 := allocmem(255);
+  try
+    StrPCopy( p1,fromname );
+    StrPCopy( p2,toname );
+    myflags := MOVEFILE_COPY_ALLOWED;
+    result := MoveFileEx(p1,p2, myflags );
+    if not result then raise Exception.CreateFmt('Error * %s * detected ' + fromname +'  '+toname,[SysErrorMessage(GetLastError)]);
+  finally
+    FreeMem( p1 );
+    FreeMem( p2 );
+  end;
+end;
+
+
+function ExtractText(const Str: string; const Delim1, Delim2: char): string;
+var
+  pos1, pos2: integer;
+begin
+  result := '';
+  pos1 := Pos(Delim1, Str);
+  pos2 := Pos(Delim2, Str);
+  if (pos1 > 0) and (pos2 > pos1) then
+    result := Copy(Str, pos1 + 1, pos2 - pos1 - 1);
+end;
+
+
+procedure TMFABO.SetNotificationProcedureFleet( pMyProcedure : Pointer );
+var
+    pg: IZPostgreSQLConnection;
+    args: Pointer;
+begin
+    pg := ZConnFleet.DbcConnection as IZPostgreSQLConnection;
+    pg.GetPlainDriver.SetNoticeProcessor(pg.GetConnectionHandle, {@PGNotifyProcessor}pMyProcedure, args);
+end;
+
+
+procedure PGNotifyProcessorFleet(arg: Pointer; message: PAnsiChar); cdecl;
+var mystr : Ansistring;
+begin
+  mystr := string( message );
+  if pos( 'CONTEXT', mystr ) > 0 then  mystr := trim( copy( mystr, 1, pos( 'CONTEXT', mystr ) -1 ) );
+
+//showmessage( mystr );
+  if pos( '[DL1]', mystr ) > 0 then
+  begin
+       mystr :=   trim(  stringreplace( mystr, 'NOTICE:','' , [] ) );
+       mystr :=   trim(  stringreplace( mystr, '[DL1]','' , [] ) );
+
+       ShowHideWait( true, mystr );
+  end;
+end;
+
+
+procedure PGNotifyProcessorWithProgressFleet(arg: Pointer; message: PAnsiChar); cdecl;
+var
+  mystr : string;
+  prgstr : String;
+  mystep, maxstep : integer;
+begin
+  mystr := string( message );
+  if pos( 'CONTEXT', mystr ) > 0 then  mystr := trim( copy( mystr, 1, pos( 'CONTEXT', mystr ) -1 ) );
+  if pos( '[PB]', mystr ) > 0 then
+  begin
+
+    mystr :=   trim(  stringreplace( mystr, 'NOTICE:','' , [] ) );
+    mystr :=   trim(  stringreplace( mystr, '[PB]','' , [] ) );
+
+    prgstr :=  ExtractText(mystr, '[', ']');
+    if prgstr <> '' then
+    begin
+      mystep := StrToIntDef(copy(prgstr, 1, POS(',', prgstr)-1), 0);
+      maxstep := StrToIntDef(copy(prgstr, POS(',', prgstr)+1 , Length(prgstr)) , 0);
+      //showmessage( format('%s %s %d %s %d' , [prgstr ,return,mystep , return, maxstep ] )  );
+      mystr :=   trim(  stringreplace( mystr, '['+prgstr+']','' , [] ) );
+    end;
+
+
+    if (mystep > 0) and (maxstep > 0) then
+      ShowHideWait( true, mystr,  mystep , maxstep)
+    else
+      ShowHideWait( true, mystr  );
+  end;
+end;
+
+
+
+
+
+procedure TMFABO.SetNotificationProcedure( pMyProcedure : Pointer );
+var
+    pg: IZPostgreSQLConnection;
+    args: Pointer;
+begin
+    pg := ZConnMFA.DbcConnection as IZPostgreSQLConnection;
+    pg.GetPlainDriver.SetNoticeProcessor(pg.GetConnectionHandle, {@PGNotifyProcessor}pMyProcedure, args);
+end;
+
+
+procedure PGNotifyProcessor(arg: Pointer; message: PAnsiChar); cdecl;
+var mystr : Ansistring;
+begin
+  mystr := string( message );
+  if pos( 'CONTEXT', mystr ) > 0 then  mystr := trim( copy( mystr, 1, pos( 'CONTEXT', mystr ) -1 ) );
+
+//showmessage( mystr );
+  if pos( '[DL1]', mystr ) > 0 then
+  begin
+       mystr :=   trim(  stringreplace( mystr, 'NOTICE:','' , [] ) );
+       mystr :=   trim(  stringreplace( mystr, '[DL1]','' , [] ) );
+
+       ShowHideWait( true, mystr );
+  end;
+end;
+
+
+
+
+
+procedure PGNotifyProcessorWithProgress(arg: Pointer; message: PAnsiChar); cdecl;
+var
+  mystr : string;
+  prgstr : String;
+  mystep, maxstep : integer;
+begin
+  mystr := string( message );
+  if pos( 'CONTEXT', mystr ) > 0 then  mystr := trim( copy( mystr, 1, pos( 'CONTEXT', mystr ) -1 ) );
+  if pos( '[PB]', mystr ) > 0 then
+  begin
+
+    mystr :=   trim(  stringreplace( mystr, 'NOTICE:','' , [] ) );
+    mystr :=   trim(  stringreplace( mystr, '[PB]','' , [] ) );
+
+    prgstr :=  ExtractText(mystr, '[', ']');
+    if prgstr <> '' then
+    begin
+      mystep := StrToIntDef(copy(prgstr, 1, POS(',', prgstr)-1), 0);
+      maxstep := StrToIntDef(copy(prgstr, POS(',', prgstr)+1 , Length(prgstr)) , 0);
+      //showmessage( format('%s %s %d %s %d' , [prgstr ,return,mystep , return, maxstep ] )  );
+      mystr :=   trim(  stringreplace( mystr, '['+prgstr+']','' , [] ) );
+    end;
+
+
+    if (mystep > 0) and (maxstep > 0) then
+      ShowHideWait( true, mystr,  mystep , maxstep)
+    else
+      ShowHideWait( true, mystr  );
+  end;
+end;
+
+
+
+
+
+
+procedure SendData(
+  copyDataStruct: TCopyDataStruct);
+var
+  receiverHandle  : THandle;
+//  res : integer;
+begin
+  if ShowProgress = nil then
+    ShowProgress := TShowProgress.Create(application);
+
+  receiverHandle := ShowProgress.handle;
+  if receiverHandle <> 0 then
+  begin
+    {res := }SendMessage(receiverHandle, WM_COPYDATA, 0, Integer(@copyDataStruct));
+  end;
+end;
+
+
+procedure InitDaemon(_left : integer = 0;_top : integer = 0; _path : string = ''; _handle : HWND = 0);
+var
+//  MDRec : TMDRec;
+//  path1 : ansistring;
+  copyDataStruct : TCopyDataStruct;
+//  MyreceiverHandle  : THandle;
+begin
+  begin
+    MDRec._kind := 1;
+    MDRec._show := true;
+    MDRec._text := 'Starting Message Deamon...';
+
+    MDRec._image_path := _path;
+    MDRec._left := _left;
+    MDRec._top := _top;
+    MDRec._progress := 0;
+    MDRec._maxprogress := 0;
+    //MDRec._handle := _handle;
+
+    copyDataStruct.dwData := Integer(cdtSetPos); //use it to identify the message contents
+    copyDataStruct.cbData := SizeOf(MDRec);
+    copyDataStruct.lpData := @MDRec;
+
+    SendData(copyDataStruct);
+  end;
+end;
+
+
+
+
+procedure ShowHideWait( ShowIt:Boolean=True;
+  eMess:AnsiString='Please be patient...';myprogress : integer = 0; maxprogress : integer = 0 );
+//var //lfound : Boolean;
+//    i : Integer;
+//
+var
+//  MDRec : TMDRec;
+  copyDataStruct : TCopyDataStruct;
+begin
+  MDRec._show := ShowIt;
+  //MDRec._handle := getcurrentprocessid;
+ if ShowIt then
+ begin
+   If maxprogress > 0 then
+   begin
+      MDRec._progress := myprogress;
+      MDRec._maxprogress := maxprogress;
+   end
+   else
+   begin
+
+      MDRec._progress := 0;
+      MDRec._maxprogress := 0;
+      if myprogress = -99 then MDRec._progress := -99;
+
+   end;
+   MDRec._kind := 1;
+   {$IFNDEF CONSOLE}
+   screen.cursor := crHourglass;
+   {$ENDIF}
+   MDRec._text := eMess ;
+ end
+  else
+  begin
+    MDRec._text :=  '';
+    {$IFNDEF CONSOLE}
+    screen.cursor := crDefault;
+    {$ENDIF}
+end;
+
+  copyDataStruct.dwData := Integer(cdtRecord); //use it to identify the message contents
+  copyDataStruct.cbData := SizeOf(MDRec);
+  copyDataStruct.lpData := @MDRec;
+
+  SendData(copyDataStruct);
+end;
+
+
+
+
+
+
+
+
+
+
+
+
+procedure TMFABO.FormCreate(Sender: TObject);
+begin
+  ParseINIFile('CRUNCH');
+  ParseINIFile('CONF');
+  LinkMFAQueries;
+  LinkFleetQueries;
+  ConnectMFA;
+  GetClients;
+  SetNotificationProcedure( @PGNotifyProcessorWithProgress );
+  //cxTabSheet4.TabVisible := False;
+  AddUser := False;
+  cxPageControl1.ActivePage := cxTabSheet1;
+end;
+
+Procedure TMFABO.ParseINIFile(MySection : AnsiString);
+var
+  myini : TIniFile;
+begin
+  myini := TIniFile.Create(IncludeTrailingPathDelimiter(ExtractFilePath(Application.ExeName))+'mfabo.config') ;
+  try
+    if uppercase(mysection) = 'CRUNCH' then
+    begin
+      MFASettings._hostname := myini.ReadString(mysection,'host','127.0.0.1') ;
+      MFASettings._port := myini.ReadInteger(mysection,'port',5432) ;
+      MFASettings._database := myini.ReadString(mysection,'database','mfa_crunch') ;
+      MFASettings._password := myini.ReadString(mysection,'password','masterkey') ;
+      MFASettings._pguser := myini.ReadString(mysection,'username','postgres') ;
+    end;
+
+    if uppercase(mysection) = 'CONF' then
+    begin
+      SQLDir :=  myini.ReadString(mysection,'sqldir',IncludeTrailingPathDelimiter(ExtractFilePath(Application.ExeName))+'SQL\');
+      statusbar1.Panels[0].Text := SQLDir;
+    end;
+  finally
+    freeandnil(myini);
+  end;
+end;
+
+
+Procedure TMFABO.ConnectToFleetDB;
+var
+  mysql : AnsiString;
+begin
+  mysql := Format('select * from jsonb_to_record((select client_connection from mfaglb.clients where client_id = $QQ$%s$QQ$)) as a'+return+
+                  '(host text, username text, database text, port integer, password text)'
+                , [ClientQ.FieldByName('client_id').AsString]);
+  DoSQLQuery(MFAInternalQ, mysql);
+
+  FleetSettings._hostname :=  MFAInternalQ.FieldByName('host').AsString;
+  FleetSettings._port :=      MFAInternalQ.FieldByName('port').AsInteger;
+  FleetSettings._database :=  MFAInternalQ.FieldByName('database').AsString;
+  FleetSettings._password :=  MFAInternalQ.FieldByName('password').AsString;
+  FleetSettings._pguser :=    MFAInternalQ.FieldByName('username').AsString;
+
+  ZConnFleet.Connected := False;
+
+  ZConnFleet.HostName := FleetSettings._hostname;
+  ZConnFleet.Port := FleetSettings._port;
+  ZConnFleet.Database := FleetSettings._database;
+  ZConnFleet.Password := FleetSettings._password;
+  ZConnFleet.User := FleetSettings._pguser;
+  ZConnFleet.Connect;
+
+  if not ZConnFleet.Connected  then raise exception.Create('error');;
+
+  SetNotificationProcedureFleet( @PGNotifyProcessorWithProgressFleet );
+
+
+end;
+
+
+
+
+procedure TMFABO.btninitFleetDBClick(Sender: TObject);
+var
+  mysql : AnsiString;
+  mystep, maxstep : integer;
+begin
+  maxstep := 6;
+  mystep:= 0;
+  ShowHideWait( true, '',  mystep , maxstep);
+  try
+    ShowHideWait( true, 'Crunch Environment',  mystep , maxstep);
+    inc(mystep);
+
+    mysql := format('select mfaglb.setup_client_import_environment($QQ$%s$QQ$, true);', [ClientQ.FieldByName('client_id').AsString]);
+    DoSQLExec(mysql);
+
+
+    ShowHideWait( true, 'Check config',  mystep , maxstep);
+    inc(mystep);
+    mysql := Format('select * from jsonb_to_record((select client_connection from mfaglb.clients where client_id = $QQ$%s$QQ$)) as a'+return+
+                    '(host text, username text, database text, port integer, password text)'
+                  , [ClientQ.FieldByName('client_id').AsString]);
+    DoSQLQuery(MFAInternalQ, mysql);
+
+
+    FleetSettings._hostname :=  MFAInternalQ.FieldByName('host').AsString;
+    FleetSettings._port :=      MFAInternalQ.FieldByName('port').AsInteger;
+    FleetSettings._database :=  'postgres';
+    FleetSettings._password :=  MFAInternalQ.FieldByName('password').AsString;
+    FleetSettings._pguser :=    MFAInternalQ.FieldByName('username').AsString;
+
+    ZConnFleet.Connected := False;
+    ZConnFleet.HostName := FleetSettings._hostname;
+    ZConnFleet.Port := FleetSettings._port;
+    ZConnFleet.Database := FleetSettings._database;
+    ZConnFleet.Password := FleetSettings._password;
+    ZConnFleet.User := FleetSettings._pguser;
+    ZConnFleet.Connect;
+
+    ShowHideWait( true, 'DB Exixsts ?',  mystep , maxstep);
+    inc(mystep);
+    mysql := format('select count(*) = 1 as dbexists from pg_database where lower(datname) = lower($QQ$%s$QQ$)', [ClientQ.FieldByName('client_id').AsString]);
+    DoSQLQueryFleet(FleetInternalQ, mysql);
+
+    ShowHideWait( true, '',  mystep , maxstep);
+    inc(mystep);
+    if not FleetInternalQ.FieldByName('dbexists').AsBoolean then
+    begin
+      mysql := format('create database %s', [lowercase(MFAInternalQ.FieldByName('database').AsString)]);
+      DoSQLExecFleet(mysql);
+      ConnectToFleetDB;
+      DoSQLExecFileFleet(SQLDir+'once_off_fleet.sql');
+    end;
+
+    ShowHideWait( true, 'Init DB',  mystep , maxstep);
+    inc(mystep);
+    ConnectToFleetDB;
+    DoSQLExecFileFleet(SQLDir+'init_fleet_db.sql');
+//    DoSQLExecFileFleet(SQLDir+'push_import.sql');
+
+    ShowHideWait( true, 'Done',  mystep , maxstep);
+    inc(mystep);
+
+  finally
+    ShowHideWait(False);
+  end;
+
+end;
+
+procedure TMFABO.btnPushAggClick(Sender: TObject);
+var
+  mysql : AnsiString;
+begin
+  ShowHideWait();
+  try
+    ConnectToFleetDB;
+//    DoSQLExecFileFleet(SQLDir+'push_import.sql');
+
+    mysql := format('UPDATE mfaglb.clients  SET client_last_push = clock_timestamp()  WHERE client_id = $QQ$%s$QQ$',
+                    [ClientQ.FieldByName('client_id').AsString]);
+
+    DoSQLExec(mysql);
+    cxGrid1DBTableView1.DataController.RefreshExternalData;
+  finally
+    ShowHideWait(False);
+  end;
+end;
+
+procedure TMFABO.btnRecreateEnvClick(Sender: TObject);
+var
+  mysql : AnsiString;
+begin
+  ShowHideWait();
+  try
+    DoSQLExecFile(SQLDir+'crunch_import.sql');
+    mysql := format('select mfaglb.setup_client_import_environment($QQ$%s$QQ$, true);', [ClientQ.FieldByName('client_id').AsString]);
+    DoSQLExec(mysql);
+  finally
+    ShowHideWait(False);
+  end;
+end;
+
+procedure TMFABO.ClientQAfterScroll(DataSet: TDataSet);
+var
+  mysql : AnsiString;
+begin
+  mysql := format('select mfaglb.get_connection_options($QQ$%s$QQ$);', [ClientQ.FieldByName('client_id').AsString]);
+  DoSQLExec(mysql);
+  DoSQLQuery(ConnectQ, 'select * from client_conn;');
+
+
+  mysql := format('select mfaglb.get_import_config_options($QQ$%s$QQ$);', [ClientQ.FieldByName('client_id').AsString]);
+  DoSQLExec(mysql);
+  DoSQLQuery(ImportConnQ, 'select * from import_conn;');
+
+
+
+  mysql := format('select mfaglb.get_dashboard_config_options($QQ$%s$QQ$);', [ClientQ.FieldByName('client_id').AsString]);
+  DoSQLExec(mysql);
+  DoSQLQuery(DashconnQ, 'select * from dash_conn;');
+
+  mysql := format('select mfaglb.get_email_options($QQ$%s$QQ$);', [ClientQ.FieldByName('client_id').AsString]);
+  DoSQLExec(mysql);
+  DoSQLQuery(EmailconnQ, 'select * from email_conn;');
+
+  mysql := format('select mfaglb.get_providers($QQ$%s$QQ$);', [ClientQ.FieldByName('client_id').AsString]);
+  DoSQLExec(mysql);
+  DoSQLQuery(ProviderQ, 'select * from provider_conn;');
+
+  GetUsers;
+
+  ImportDir := IncludeTrailingPathDelimiter(StringReplace( ClientQ.FieldByName('client_filespace').AsString, '/', '\', [rfReplaceAll]));
+  Archivedir := IncludeTrailingPathDelimiter(ImportDir + 'archived');
+
+
+end;
+
+Procedure TMFABO.ConnectMFA;
+begin
+  if not ZConnMFA.Connected then
+  begin
+    ZConnMFA.HostName := MFASettings._hostname;
+    ZConnMFA.Port := MFASettings._port;
+    ZConnMFA.Database := MFASettings._database;
+    ZConnMFA.Password := MFASettings._password;
+    ZConnMFA.User := MFASettings._pguser;
+    ZConnMFA.Connect;
+  end;
+end;
+
+function TMFABO.Return : AnsiString;
+begin
+  result := #10+#13;
+end;
+
+
+procedure TMFABO.DoStuffWithFiles;
+var
+  mysql : AnsiString;
+  SourceFile : AnsiString;
+  TargetFile : AnsiString;
+  MD5CheckShum : AnsiString;
+  FilesQ : TZQuery;
+begin
+  FilesQ := TZQuery.Create(Self);
+  FilesQ.Connection := ZConnMFA;
+  try
+    mysql := format('with client_files as ('+return+
+                    '     SELECT'+return+
+                    '         client_id,'+return+
+                    '         additional_email_files,'+return+
+                    '         unnest(client_providers) AS provider_name'+return+
+                    '     FROM mfaglb.clients'+return+
+                    '     where client_id = $QQ$%s$QQ$'+return+
+                    ' )'+return+
+                    ' , provider_files as ('+return+
+                    '     SELECT'+return+
+                    '         client_id,'+return+
+                    '         provider_allowed_files || additional_email_files AS allowed_email_files'+return+
+                    '     FROM client_files'+return+
+                    '         JOIN mfaglb.v_providers'+return+
+                    '         USING (provider_name)'+return+
+                    ' )'+return+
+                    ' select unnest(allowed_email_files) as files from provider_files',
+                    [ClientQ.FieldByName('client_id').AsString]);
+    DoSQLQuery(FilesQ, mysql);
+
+
+
+    FilesQ.First;
+    while not FilesQ.eof do
+    begin
+      SourceFile := ImportDir+FilesQ.FieldByName('files').AsString;
+      TargetFile := ArchiveDir+FilesQ.FieldByName('files').AsString+'_'+FormatDateTime('YYYYMMDD_HHNNSSZZZ', now());
+      if FileExists(SourceFile) then
+      begin
+        MD5CheckShum := MD5File(SourceFile);
+        mysql := format('select mfaglb.add_processed_file($QQ$%s$QQ$, $QQ$%s$QQ$, $QQ$%s$QQ$)',
+                        [ClientQ.FieldByName('client_id').AsString, FilesQ.FieldByName('files').AsString, MD5CheckShum]);
+        DoSQLExec(mysql);
+        FileMove(SourceFile, TargetFile );
+      end;
+      FilesQ.Next;
+    end;
+  finally
+    FreeAndNil(FilesQ);
+  end;
+
+
+end;
+
+procedure TMFABO.btnAllInOneClick(Sender: TObject);
+var
+  mysql : AnsiString;
+  SourceFile , TargetFile : AnsiString;
+begin
+  ShowHideWait();
+  try
+    try
+      mysql := format('select mfaglb.crunch_import(jsonb_build_object($QQ$_client_id$QQ$, $QQ$%s$QQ$));', [ClientQ.FieldByName('client_id').AsString]);
+      DoSQLExec(mysql);
+
+      mysql := format('select mfaglb.import_custom_import_config(jsonb_build_object($QQ$_client_id$QQ$, $QQ$%s$QQ$));', [ClientQ.FieldByName('client_id').AsString]);
+      DoSQLExec(mysql);
+      //DoSQLExecFile(SQLDir+'crunch_import.sql');
+      ConnectToFleetDB;
+      mysql := 'select fleet.push_import(null)';
+      DoSQLExecFleet(mysql);
+      //DoSQLExecFileFleet(SQLDir+'push_import.sql');
+
+      ShowHideWait(true, 'Finishing up...');
+      mysql := format('UPDATE mfaglb.clients  SET client_last_push = clock_timestamp()  WHERE client_id = $QQ$%s$QQ$',
+                      [ClientQ.FieldByName('client_id').AsString]);
+
+      DoSQLExec(mysql);
+
+      if not DirectoryExists(Archivedir) then ForceDirectories(ArchiveDir);
+
+      ShowHideWait(true, 'Archiving...');
+      DoStuffWithFiles;
+
+      ShowHideWait(true, 'Refresh...');
+      cxGrid1DBTableView1.DataController.RefreshExternalData;
+    except
+      raise;
+    end;
+  finally
+     ShowHideWait(False);
+  end;
+
+end;
+
+procedure TMFABO.btnCancelUserClick(Sender: TObject);
+begin
+  cxPageControl2.ActivePage := cxTabsheet5;
+  AddUser := False;
+end;
+
+procedure TMFABO.btnImportRawDataClick(Sender: TObject);
+begin
+  ShowHideWait();
+  DoSQLExecFile(SQLDir+'crunch_import.sql');
+  cxGrid1DBTableView1.DataController.RefreshExternalData;
+  ShowHideWait(False);
+end;
+
+procedure TMFABO.btnSaveConfigClick(Sender: TObject);
+var
+  mysql : AnsiString;
+begin
+  ShowHideWait();
+  try
+    if ConnectQ.State in [dsInsert, dsEdit] then ConnectQ.Post;
+    if ImportConnQ.State in [dsInsert, dsEdit] then ImportConnQ.Post;
+    if DashconnQ.State in [dsInsert, dsEdit] then DashconnQ.Post;
+    if EmailconnQ.State in [dsInsert, dsEdit] then EmailconnQ.Post;
+    if ProviderQ.State in [dsInsert, dsEdit] then ProviderQ.Post;
+
+    mysql := format('update mfaglb.clients set'+return+
+                    '    (dashboard_config, client_connection, import_config, email_options, client_providers) = '+return+
+                    '( ( SELECT concat($QQ${$QQ$, string_agg(concat($QQ$"$QQ$, key, $QQ$":$QQ$, value, $QQ$$QQ$), $QQ$, $QQ$), $QQ$}$QQ$) :: JSONB from dash_conn),'+return+
+                    '( SELECT concat($QQ${$QQ$, string_agg(concat($QQ$"$QQ$, KEY, $QQ$":"$QQ$, VALUE, $QQ$"$QQ$), $QQ$, $QQ$), $QQ$}$QQ$ )::jsonb FROM client_conn) ,'+return+
+                    '( SELECT concat($QQ${$QQ$, string_agg(concat($QQ$"$QQ$, KEY, $QQ$":$QQ$, VALUE, $QQ$$QQ$), $QQ$, $QQ$), $QQ$}$QQ$ )::jsonb FROM import_conn),'+return+
+                    '( SELECT concat($QQ${$QQ$, string_agg(concat($QQ$"$QQ$, KEY, $QQ$":"$QQ$, VALUE, $QQ$"$QQ$), $QQ$, $QQ$), $QQ$}$QQ$ )::jsonb FROM email_conn),'+return+
+                    '( SELECT array_agg(key) FROM provider_conn WHERE value)'+return+
+                    ') where client_id = $QQ$%s$QQ$'
+                      ,[ClientQ.FieldByName('client_id').AsString]);
+    DoSQLExec(mysql);
+    cxGrid1DBTableView1.DataController.RefreshExternalData;
+  finally
+    ShowHideWait(False);
+  end;
+end;
+
+procedure TMFABO.btnSaveUserClick(Sender: TObject);
+var
+  mysql : AnsiString;
+begin
+  if edPassword.Text <> edRePassword.Text then
+  begin
+    MessageDlg('Passwords do not match...', mtError, [mbok],0, mbok);
+    exit;
+  end;
+
+  mysql := format('select (ff->>$QQ$result$QQ$)::boolean as res, ff->>$QQ$message$QQ$ as msg '+
+                  ' from mfaglb.add_edit_user('+
+                  'jsonb_build_object('+
+                  '$QQ$login_email$QQ$, $QQ$%s$QQ$,'+
+                  '$QQ$login_password$QQ$, $QQ$%s$QQ$,'+
+                  '$QQ$firstname$QQ$, $QQ$%s$QQ$,'+
+                  '$QQ$surname$QQ$, $QQ$%s$QQ$,'+
+                  '$QQ$alternate_mail$QQ$, $QQ$%s$QQ$,'+
+                  '$QQ$client_code$QQ$, $QQ$%s$QQ$'+
+                  ')) as ff',
+                  [edUsername.Text,
+                   edPassword.Text,
+                   edFirstname.Text,
+                   edSurname.Text,
+                   edAlterMail.Text,
+                   ClientQ.FieldByName('client_id').AsString]);
+  DoSQLQuery(MFAInternalQ, mysql);
+  if MFAInternalQ.FieldByName('res').AsBoolean then
+  begin
+    UsersQ.Refresh;
+    AddUser := False;
+    cxPageControl2.ActivePage := cxTabsheet5;
+  end
+  else
+  begin
+    MessageDlg(MFAInternalQ.FieldByName('msg').AsString, mtError, [mbok],0, mbok);
+  end;
+
+
+
+end;
+
+procedure TMFABO.cxButton10Click(Sender: TObject);
+begin
+  GloClientQ.First;
+  cxProgressBar1.Position := 1;
+  while not GloClientQ.Eof do
+  begin
+    if GloClientQ.FieldByName('chk').AsInteger = 1 then
+    begin
+      ClientQ.RecNo := GloClientQ.Recno;
+      btnRecreateEnvClick(self);
+      btninitFleetDBClick(self);
+    end;
+    cxProgressBar1.Position := cxProgressBar1.Position + 1;
+    GloClientQ.Next;
+  end;
+end;
+
+procedure TMFABO.cxButton1Click(Sender: TObject);
+var
+  mysql : AnsiString;
+  ClientCode : String;
+begin
+  ClientCode := '';
+  if InputQuery('Add new client','Enter Client Code',ClientCode) then
+  begin
+    mysql := format('insert into mfaglb.clients (client_id) values (upper($QQ$%s$QQ$));', [ClientCode]);
+    DoSQLExec(mysql);
+    ClientQ.Refresh;
+  end;
+
+end;
+
+procedure TMFABO.GetUsers;
+var
+  mysql : AnsiString;
+begin
+  mysql := format('select * from mfaglb.users where client_code = $QQ$%s$QQ$;', [ClientQ.FieldByName('client_id').AsString]);
+  DoSQLQuery(UsersQ, mysql);
+end;
+
+
+procedure TMFABO.LoadUser;
+var
+  mysql : AnsiString;
+begin
+  mysql := format('select * from mfaglb.users where client_code = $QQ$%s$QQ$ and login_email = $QQ$%s$QQ$;',
+                  [ClientQ.FieldByName('client_id').AsString, UsersQ.FieldByName('login_email').AsString]);
+  DoSQLQuery(EditUserQ, mysql);
+
+  edUsername.Text := EditUserQ.FieldByName('login_email').AsString;
+  edFirstname.Text := EditUserQ.FieldByName('firstname').AsString;
+  edSurname.Text := EditUserQ.FieldByName('surname').AsString;
+  edAlterMail.Text := EditUserQ.FieldByName('alternate_mail').AsString;
+  edPassword.Text := '<<<LEAVE>>>';
+  edRePassword.Text := '<<<LEAVE>>>';
+
+end;
+
+
+procedure TMFABO.cxButton3Click(Sender: TObject);
+begin
+  showmessage(MD5File('f:\mfa_imports\dci072\tomtomevents.csv'));
+end;
+
+procedure TMFABO.cxButton4Click(Sender: TObject);
+begin
+   AddUser := False;
+   cxPageControl2.ActivePage := cxTabsheet6;
+   LoadUser;
+end;
+
+procedure TMFABO.cxButton5Click(Sender: TObject);
+begin
+   AddUser := True;
+   edUsername.Text := '';
+   edFirstname.Text := '';
+   edSurname.Text := '';
+   edAlterMail.Text := '';
+   edPassword.Text := '';
+   edRePassword.Text := '';
+   cxPageControl2.ActivePage := cxTabsheet6;
+end;
+
+procedure TMFABO.cxButton6Click(Sender: TObject);
+begin
+//  ShellExecute(Self,pchar('git'), pchar('pull')
+end;
+
+procedure TMFABO.cxButton7Click(Sender: TObject);
+begin
+  GetClients;
+end;
+
+procedure TMFABO.cxButton8Click(Sender: TObject);
+begin
+  GetGlobalClients;
+  cxProgressBar1.Properties.Max :=  GloClientQ.RecordCount;
+end;
+
+procedure TMFABO.cxButton9Click(Sender: TObject);
+begin
+  GloClientQ.First;
+  cxProgressBar1.Position := 1;
+  while not GloClientQ.Eof do
+  begin
+    if GloClientQ.FieldByName('chk').AsInteger = 1 then
+    begin
+      ClientQ.RecNo := GloClientQ.Recno;
+      btnRecreateEnvClick(self);
+      btninitFleetDBClick(self);
+      btnAllInOneClick(self);
+    end;
+    cxProgressBar1.Position := cxProgressBar1.Position + 1;
+    GloClientQ.Next;
+  end;
+
+end;
+
+function TMFABO.MD5File( FileName: string): string;
+var
+  IdMD5: TIdHashMessageDigest5;
+  FS: TFileStream;
+begin
+ IdMD5 := TIdHashMessageDigest5.Create;
+ FS := TFileStream.Create(FileName, fmOpenRead or fmShareDenyWrite);
+ try
+   Result := IdMD5.HashStreamAsHex(FS)
+ finally
+   FS.Free;
+   IdMD5.Free;
+ end;
+end;
+
+
+procedure TMFABO.cxDBMemo21Exit(Sender: TObject);
+begin
+  if not DirectoryExists(cxDBMemo21.Text) then
+  begin
+    if MessageDlg(cxDBMemo21.Text + ' does not exist... Create it ?', mtConfirmation, [mbyes, mbno],0, mbyes) = mryes then
+    begin
+      ForceDirectories(cxDBMemo21.Text);
+    end;
+  end;
+
+end;
+
+procedure TMFABO.cxGrid1DBTableView1FocusedRecordChanged(
+  Sender: TcxCustomGridTableView; APrevFocusedRecord,
+  AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
+begin
+  If ClientQ.Active then Panel1.Caption := 'Selected Client :'+ClientQ.FieldByName('client_name').AsString;
+end;
+
+procedure TMFABO.cxTabSheet4Show(Sender: TObject);
+begin
+  cxPageControl2.HideTabs := True;
+  cxPageControl2.ActivePage := cxTabSheet5;
+end;
+
+procedure TMFABO.cxTabSheet6Show(Sender: TObject);
+begin
+  edUsername.Enabled := AddUser;
+end;
+
+procedure TMFABO.cxTabSheet7Show(Sender: TObject);
+var
+  mysql : AnsiString;
+begin
+  mysql := format('select * from mfaglb.get_basic_log_data($QQ$%s$QQ$)',[ClientQ.FieldByName('client_id').AsString]) ;
+  DoSQLQuery(LogQ, mysql);
+end;
+
+Procedure TMFABO.DisconnectMFA;
+begin
+  if ZConnMFA.Connected then
+  begin
+    ZConnMFA.Disconnect;
+  end;
+end;
+
+procedure TMFABO.DoSQLQuery(MyQ: TZQuery; mysql: AnsiString);
+begin
+  MyQ.Active := false;
+  MyQ.SQL.Clear;
+  MyQ.SQL.Add(mysql);
+  MyQ.Open;
+end;
+
+procedure TMFABO.LinkMFAQueries;
+begin
+  ClientQ.Connection := ZConnMFA;
+  MFAInternalQ.Connection := ZConnMFA;
+  ConnectQ.Connection := ZConnMFA;
+  DashConnQ.Connection := ZConnMFA;
+  EmailConnQ.Connection := ZConnMFA;
+  ImportConnQ.Connection := ZConnMFA;
+
+
+end;
+
+
+procedure TMFABO.GetClients;
+var
+  mysql : AnsiString;
+begin
+  showHideWait(True, 'Fetching Clients');
+  try
+    mysql := 'select * from mfaglb.clients order by client_id';
+    DoSQLQuery(ClientQ, mysql);
+  finally
+    ShowHideWait(false);
+  end;
+end;
+
+
+procedure TMFABO.GetGlobalClients;
+var
+  mysql : AnsiString;
+begin
+  showHideWait(True, 'Fetching Clients');
+  try
+    mysql := 'drop table if exists gloclient; create temp table gloclient as (select 0::integer as chk , client_id, client_name from mfaglb.clients order by client_id)';
+    DoSQLExec( mysql);
+    mysql := 'alter table gloclient add constraint gcpkey primary key (client_id);';
+    DoSQLExec( mysql);
+    mysql := 'select * from gloclient';
+    DoSQLQuery(GloClientQ, mysql);
+  finally
+    ShowHideWait(false);
+  end;
+end;
+
+
+procedure TMFABO.DoSQLExecFile(MyScript: AnsiString);
+var
+  mysql : AnsiString;
+begin
+  MFAInternalQ.Active := false;
+  MFAInternalQ.SQL.Clear;
+  MFAInternalQ.SQL.LoadFromFile(MyScript);
+  mysql := MFAInternalQ.SQL.Text;
+
+  DecompileMacros(mysql);
+  MFAInternalQ.SQL.Text := mysql;
+
+  MFAInternalQ.ExecSQL;
+end;
+
+
+procedure TMFABO.DoSQLExec(MySql: AnsiString);
+begin
+  MFAInternalQ.Active := false;
+  MFAInternalQ.SQL.Clear;
+  MFAInternalQ.SQL.Text := mysql;
+  MFAInternalQ.ExecSQL;
+end;
+
+
+
+procedure TMFABO.LinkFleetQueries;
+begin
+  FleetInternalQ.Connection := ZConnFleet;
+end;
+
+
+procedure TMFABO.DoSQLExecFileFleet(MyScript: AnsiString);
+var
+mysql : AnsiString;
+begin
+  FleetInternalQ.Active := false;
+  FleetInternalQ.SQL.Clear;
+  FleetInternalQ.SQL.LoadFromFile(MyScript);
+  mysql := FleetInternalQ.SQL.Text;
+
+  DecompileMacros(mysql);
+  FleetInternalQ.SQL.Text := mysql;
+
+  FleetInternalQ.ExecSQL;
+end;
+
+
+procedure TMFABO.DoSQLExecFleet(MySql: AnsiString);
+begin
+  FleetInternalQ.Active := false;
+  FleetInternalQ.SQL.Clear;
+  DecompileMacros(mysql);
+  FleetInternalQ.SQL.Text := mysql;
+  FleetInternalQ.ExecSQL;
+end;
+
+procedure TMFABO.DoSQLQueryFleet(MyQ: TZQuery; mysql: AnsiString);
+begin
+  MyQ.Active := false;
+  MyQ.SQL.Clear;
+  MyQ.SQL.Add(mysql);
+  MyQ.Open;
+end;
+
+procedure TMFABO.DecompileMacros(var MyString : AnsiString);
+begin
+  MyString := StringReplace( MyString ,'<<CLIENTID>>', uppercase(ClientQ.FieldByName('client_id').AsString) ,[rfReplaceAll]);
+  MyString := StringReplace( MyString ,'<<LCLIENTID>>', lowercase(ClientQ.FieldByName('client_id').AsString) ,[rfReplaceAll]);
+  MyString := StringReplace( MyString ,'<<HOST>>', ZConnMFA.HostName ,[rfReplaceAll]);
+  MyString := StringReplace( MyString ,'<<PORT>>', ZConnMFA.Port.ToString() ,[rfReplaceAll]);
+  MyString := StringReplace( MyString ,'<<DATABASE>>', ZConnMFA.Database ,[rfReplaceAll]);
+  MyString := StringReplace( MyString ,'<<USERNAME>>', ZConnMFA.User ,[rfReplaceAll]);
+  MyString := StringReplace( MyString ,'<<PASSWORD>>', ZConnMFA.Password ,[rfReplaceAll]);
+end;
+
+
+end.

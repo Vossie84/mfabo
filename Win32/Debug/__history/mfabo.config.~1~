@@ -1,0 +1,9 @@
+[CRUNCH]
+host=localhost
+port=5495
+database=mfa_crunch
+password=masterkey
+username=postgres
+
+[C]
+aa={"host": "wofbfleetdev.dedicated.co.za", "port": "5432", "database": "dci072", "password": "masterkey", "username": "postgres"}

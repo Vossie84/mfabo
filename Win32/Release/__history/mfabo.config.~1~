@@ -1,0 +1,6 @@
+[CRUNCH]
+host=127.0.0.1
+port=5495
+database=mfa_crunch
+password=masterkey
+username=postgres

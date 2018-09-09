@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899/12/30 00:00:00.000.783,=D:\code\DCI\u_ShowProgress.pas</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.503,=C:\Users\Andries Vorster\Documents\RAD Studio\Projects\Unit6.pas</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.803,=D:\code\DCI\u_wm_struc.pas</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.649,C:\Users\Andries Vorster\Documents\RAD Studio\Projects\Project4.dproj=D:\code\DCI\MFABackOffice.dproj</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.313,=C:\Users\Andries Vorster\Documents\RAD Studio\Projects\Unit6.pas</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.797,D:\code\DCI\u_iniconf.pas=</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.048,C:\Users\Andries Vorster\Documents\RAD Studio\Projects\Unit6.dfm=D:\code\DCI\mfa_backoffice.dfm</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.048,C:\Users\Andries Vorster\Documents\RAD Studio\Projects\Unit6.pas=D:\code\DCI\mfa_backoffice.pas</Transaction>
+    <Transaction>1899/12/30 00:00:00.000.582,=D:\code\DCI\u_iniconf.pas</Transaction>
+  </Transactions>
+</BorlandProject>
